@@ -3,7 +3,6 @@ package by.tms.models;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Predicate;
 
 public abstract class Show {
 
@@ -92,7 +91,7 @@ public abstract class Show {
 
         @Override
         public int compare(Show show1, Show show2) {
-            return Double.compare(show1.getRating(), show2.getRating());
+            return Double.compare(show2.getRating(), show1.getRating());
         }
     }
 
@@ -100,7 +99,7 @@ public abstract class Show {
 
         @Override
         public int compare(Show show1, Show show2) {
-            return Integer.compare(show1.getRatesCounter(), show2.getRatesCounter());
+            return Integer.compare(show2.getRatesCounter(), show1.getRatesCounter());
         }
     }
 
@@ -109,6 +108,7 @@ public abstract class Show {
     public static final Comparator<Show> COMPARE_BY_YEAR = new CompareByYear();
     public static final Comparator<Show> COMPARE_BY_RATING = new CompareByRating();
     public static final Comparator<Show> COMPARE_BY_RATES_COUNTER = new CompareByRatesCounter();
+
     public static List<Comparator<Show>> getComparators() {
 
         List<Comparator<Show>> comparators = new ArrayList<>();
