@@ -8,6 +8,16 @@
     <artifactId>tv_show</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <dependencies>
+        <!-- https://mavenlibs.com/maven/dependency/ch.qos.logback/logback-classic -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.6</version>
+        </dependency>
+
+    </dependencies>
+
     <properties>
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
