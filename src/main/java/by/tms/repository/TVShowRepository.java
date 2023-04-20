@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface TVShowRepository {
 
-    List<Show> getDataFromFile() throws IOException;
+    List<Show> getDataFromFile();
 }

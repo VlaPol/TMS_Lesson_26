@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -95,16 +94,18 @@ public class Main {
                                 }
                             }
                             case 16 -> {
-                                System.out.println("Введите пункты сортировок через запятую");
+                                System.out.println("Введите пункты сортировок через запятую или 0 при отсутствии выбора");
                                 String filterChain = scanner.nextLine();
-                                String[] strings = filterChain.split(", ");
                                 List<Comparator<Show>> userAction = new ArrayList<>();
-                                for (String string : strings) {
-                                    int index = Integer.parseInt(string.replaceFirst("1", ""));
-                                    if (index == 0) {
-                                        throw new IllegalArgumentException("Выбран пункт 0, который не предусмотрен для цепочки фильтров");
+                                if (!(filterChain.equals("0"))) {
+                                    String[] strings = filterChain.split(", ");
+                                    for (String string : strings) {
+                                        int index = Integer.parseInt(string.replaceFirst("1", ""));
+                                        if (index == 0) {
+                                            throw new IllegalArgumentException("Выбран пункт 0, который не предусмотрен для цепочки фильтров");
+                                        }
+                                        userAction.add(COMPORATORS_LIST.get(index - 1));
                                     }
-                                    userAction.add(COMPORATORS_LIST.get(index - 1));
                                 }
                                 showList = tvShowService.getSortedListByChainOfRules(userAction);
                                 for (Show itm : showList) {
@@ -185,8 +186,11 @@ public class Main {
                                 int filterNumber;
                                 Predicate<Show> tmpPredicate = null;
                                 do {
-                                    System.out.println("Выберите пункт фильтрации:");
+                                    System.out.println("Выберите пункт фильтрации или 0 при отсутствии выбора:");
                                     filterNumber = Integer.parseInt(scanner.nextLine());
+                                    if (filterNumber == 0) {
+                                        break;
+                                    }
                                     System.out.println("Введите условие фильтра");
                                     String userFilter = scanner.nextLine();
                                     switch (filterNumber) {
@@ -202,6 +206,7 @@ public class Main {
                                     filterNumber = Integer.parseInt(scanner.nextLine());
 
                                 } while (filterNumber != -1);
+
                                 showList = tvShowService.getFiltredListByChainOfRules(predicateList);
                                 for (Show itm : showList) {
                                     System.out.println(itm.toString());

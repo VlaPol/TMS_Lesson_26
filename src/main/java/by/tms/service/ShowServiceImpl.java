@@ -4,9 +4,9 @@ import by.tms.models.Show;
 import by.tms.repository.TVShowRepository;
 import by.tms.utils.predicates.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -20,37 +20,34 @@ public class ShowServiceImpl implements ShowService {
 
 
     @Override
-    public List<Show> getSortedList(String action) throws IOException {
+    public List<Show> getSortedList(String action) {
 
-        Comparator<Show> tmpComparator = null;
-
-        switch (action) {
-            case "byCountry" -> tmpComparator = Show.COMPARE_BY_COUNTRY;
-            case "byYear" -> tmpComparator = Show.COMPARE_BY_YEAR;
-            case "byTitle" -> tmpComparator = Show.COMPARE_BY_NAME;
-            case "byRating" -> tmpComparator = Show.COMPARE_BY_RATING;
-            case "byCounters" -> tmpComparator = Show.COMPARE_BY_RATES_COUNTER;
-        }
+        Comparator<Show> tmpComparator = switch (action) {
+            case "byCountry" -> Show.COMPARE_BY_COUNTRY;
+            case "byYear" -> Show.COMPARE_BY_YEAR;
+            case "byTitle" -> Show.COMPARE_BY_NAME;
+            case "byRating" -> Show.COMPARE_BY_RATING;
+            case "byCounters" -> Show.COMPARE_BY_RATES_COUNTER;
+            default -> throw new IllegalStateException("Unexpected value: " + action);
+        };
         return getSortedShows(tmpComparator);
 
     }
 
     @Override
-    public List<Show> getSortedListByChainOfRules(List<Comparator<Show>> action) throws IOException {
+    public List<Show> getSortedListByChainOfRules(List<Comparator<Show>> action) {
 
         List<Show> sourceList = getShowList();
-        Comparator<Show> comparatorChain = action.get(0);
-
-        int numOfComparators = action.size();
-
-        if (numOfComparators == 2) {
-            comparatorChain = comparatorChain.thenComparing(action.get(1));
+        if (action.isEmpty()) {
+            return sourceList;
         }
-        if (numOfComparators == 3) {
-            comparatorChain = comparatorChain.thenComparing(action.get(2));
-        }
-        if (numOfComparators == 4) {
-            comparatorChain = comparatorChain.thenComparing(action.get(3));
+
+        Iterator<Comparator<Show>> iterator = action.iterator();
+        Comparator<Show> comparatorChain = iterator.next();
+
+        while (iterator.hasNext()) {
+            Comparator<Show> next = iterator.next();
+            comparatorChain = comparatorChain.thenComparing(next);
         }
 
         sourceList.sort(comparatorChain);
@@ -60,28 +57,26 @@ public class ShowServiceImpl implements ShowService {
     }
 
     @Override
-    public List<Show> getFiltredListByChainOfRules(List<Predicate<Show>> action) throws IOException {
+    public List<Show> getFiltredListByChainOfRules(List<Predicate<Show>> action) {
 
         List<Show> sourceList = getShowList();
-        int numOfPredicates = action.size();
 
-
-        Predicate<Show> predicateChain = action.get(0);
-
-        if (numOfPredicates >= 2) {
-            predicateChain = predicateChain.and(action.get(1));
+        if (action.isEmpty()) {
+            return sourceList;
         }
-        if (numOfPredicates >= 3) {
-            predicateChain = predicateChain.and(action.get(2));
-        }
-        if (numOfPredicates >= 4) {
-            predicateChain = predicateChain.and(action.get(3));
+
+        Iterator<Predicate<Show>> iterator = action.iterator();
+        Predicate<Show> predicateChain = iterator.next();
+
+        while (iterator.hasNext()) {
+            Predicate<Show> next = iterator.next();
+            predicateChain = predicateChain.and(next);
         }
 
         List<Show> returnedList = new ArrayList<>();
 
-        for (Show itm: sourceList){
-            if(predicateChain.test(itm)){
+        for (Show itm : sourceList) {
+            if (predicateChain.test(itm)) {
                 returnedList.add(itm);
             }
         }
@@ -91,7 +86,7 @@ public class ShowServiceImpl implements ShowService {
     }
 
     @Override
-    public List<Show> getShowList() throws IOException {
+    public List<Show> getShowList() {
         return tvShowRepository.getDataFromFile();
     }
 
@@ -99,28 +94,27 @@ public class ShowServiceImpl implements ShowService {
     //        return showList.stream().filter(show -> show.getCountryCode()
     //                .equals(query)).collect(Collectors.toList());
     @Override
-    public List<Show> getFiltredList(String action, String query) throws IOException {
+    public List<Show> getFiltredList(String action, String query) {
 
-        Predicate<Show> tempPredicate = null;
-
-        switch (action) {
-            case "byCountry" -> tempPredicate = new PredicateByCountry(query.toUpperCase());
-            case "byYear" -> tempPredicate = new PredicateByYear(Integer.parseInt(query));
-            case "byTitle" -> tempPredicate = new PredicateByTitle(query);
-            case "betweenTwoRates" -> tempPredicate = new PredicateBetweenTwoRates(query);
-            case "betweenTwoRatesCounters" -> tempPredicate = new PredicateBetweenTwoRatesCounters(query);
-        }
+        Predicate<Show> tempPredicate = switch (action) {
+            case "byCountry" -> new PredicateByCountry(query.toUpperCase());
+            case "byYear" -> new PredicateByYear(Integer.parseInt(query));
+            case "byTitle" -> new PredicateByTitle(query);
+            case "betweenTwoRates" -> new PredicateBetweenTwoRates(query);
+            case "betweenTwoRatesCounters" -> new PredicateBetweenTwoRatesCounters(query);
+            default -> throw new IllegalStateException("Unexpected value: " + action);
+        };
         return getFiltredShows(tempPredicate);
     }
 
-    private List<Show> getSortedShows(Comparator<Show> comparator) throws IOException {
+    private List<Show> getSortedShows(Comparator<Show> comparator) {
 
         List<Show> showList = getShowList();
         showList.sort(comparator);
         return showList;
     }
 
-    private List<Show> getFiltredShows(Predicate<Show> predicate) throws IOException {
+    private List<Show> getFiltredShows(Predicate<Show> predicate) {
 
         List<Show> showList = getShowList();
 
