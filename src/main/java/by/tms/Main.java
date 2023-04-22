@@ -19,7 +19,7 @@ public class Main {
     private static final List<String> ACTIONS_FOR_SORTING = List.of("byTitle", "byCountry", "byYear", "byRating", "byCounters");
     private final static List<Comparator<Show>> COMPORATORS_LIST = Show.getComparators();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         LOG.info("Приложение запущено");
 
@@ -119,6 +119,11 @@ public class Main {
                     while (flag);
                 }
                 case 2 -> {
+
+                    List<Predicate<Show>> predicateList;
+                    int filterNumber;
+                    Predicate<Show> tmpPredicate = null;
+
                     System.out.println("Выберите способ сортировки: ");
                     String inputString = scanner.nextLine();
                     boolean flag = true;
@@ -136,7 +141,8 @@ public class Main {
                         int subKey = Integer.parseInt(scanner.nextLine());
                         switch (subKey) {
                             case 20 -> {
-                                showList = tvShowService.getShowList();
+                                predicateList = new ArrayList<>();
+                                showList = tvShowService.getFiltredListByChainOfRules(predicateList);
                                 for (Show itm : showList) {
                                     System.out.println(itm.toString());
                                 }
@@ -144,7 +150,9 @@ public class Main {
                             case 21 -> {
                                 System.out.println("Введите интересующее название");
                                 String title = scanner.nextLine();
-                                showList = tvShowService.getFiltredList("byTitle", title);
+                                predicateList = new ArrayList<>();
+                                predicateList.add(new PredicateByTitle(title));
+                                showList = tvShowService.getFiltredListByChainOfRules(predicateList);
                                 for (Show itm : showList) {
                                     System.out.println(itm.toString());
                                 }
@@ -152,53 +160,80 @@ public class Main {
                             case 22 -> {
                                 System.out.println("Введите интересующую страну (код - две буквы)");
                                 String code = scanner.nextLine();
-                                showList = tvShowService.getFiltredList("byCountry", code);
+                                predicateList = new ArrayList<>();
+                                predicateList.add(new PredicateByCountry(code));
+                                showList = tvShowService.getFiltredListByChainOfRules(predicateList);
                                 for (Show itm : showList) {
                                     System.out.println(itm.toString());
                                 }
                             }
                             case 23 -> {
                                 System.out.println("Введите интересующий год");
-                                String year = scanner.nextLine();
-                                showList = tvShowService.getFiltredList("byYear", year);
+                                int year = Integer.parseInt(scanner.nextLine());
+                                predicateList = new ArrayList<>();
+                                predicateList.add(new PredicateByYear(year));
+                                showList = tvShowService.getFiltredListByChainOfRules(predicateList);
                                 for (Show itm : showList) {
                                     System.out.println(itm.toString());
                                 }
                             }
                             case 24 -> {
-                                System.out.println("Введите через запятую интересующий промежуток оценок");
-                                String rates = scanner.nextLine();
-                                showList = tvShowService.getFiltredList("betweenTwoRates", rates);
+                                System.out.println("Введите начальную границу промежутка оценок");
+                                double from = Double.parseDouble(scanner.nextLine());
+                                System.out.println("Введите конечную границу промежутка оценок");
+                                double to = Double.parseDouble(scanner.nextLine());
+                                predicateList = new ArrayList<>();
+                                predicateList.add(new PredicateBetweenTwoRates(from, to));
+                                showList = tvShowService.getFiltredListByChainOfRules(predicateList);
                                 for (Show itm : showList) {
                                     System.out.println(itm.toString());
                                 }
                             }
                             case 25 -> {
-                                System.out.println("Введите через запятую интересующее количество проголосовавших");
-                                String counters = scanner.nextLine();
-                                showList = tvShowService.getFiltredList("betweenTwoRatesCounters", counters);
+                                System.out.println("Введите начальную границу проголосовавших");
+                                double from = Double.parseDouble(scanner.nextLine());
+                                System.out.println("Введите конечную границу проголосовавших");
+                                double to = Double.parseDouble(scanner.nextLine());
+                                predicateList = new ArrayList<>();
+                                predicateList.add(new PredicateBetweenTwoRatesCounters(from, to));
+                                showList = tvShowService.getFiltredListByChainOfRules(predicateList);
                                 for (Show itm : showList) {
                                     System.out.println(itm.toString());
                                 }
                             }
                             case 26 -> {
-                                List<Predicate<Show>> predicateList = new ArrayList<>();
-                                int filterNumber;
-                                Predicate<Show> tmpPredicate = null;
+                                predicateList = new ArrayList<>();
                                 do {
                                     System.out.println("Выберите пункт фильтрации или 0 при отсутствии выбора:");
                                     filterNumber = Integer.parseInt(scanner.nextLine());
                                     if (filterNumber == 0) {
                                         break;
                                     }
-                                    System.out.println("Введите условие фильтра");
-                                    String userFilter = scanner.nextLine();
+                                    String userFilter = "";
+                                    double from = 0;
+                                    double to = 0;
+                                    if (filterNumber != 24 && filterNumber != 25) {
+                                        System.out.println("Введите условие фильтра");
+                                        userFilter = scanner.nextLine();
+                                    }
+                                    if (filterNumber == 24) {
+                                        System.out.println("Введите начальную границу проголосовавших");
+                                        from = Double.parseDouble(scanner.nextLine());
+                                        System.out.println("Введите конечную границу проголосовавших");
+                                        to = Double.parseDouble(scanner.nextLine());
+                                    }
+                                    if (filterNumber == 25) {
+                                        System.out.println("Введите начальную границу проголосовавших");
+                                        from = Double.parseDouble(scanner.nextLine());
+                                        System.out.println("Введите конечную границу проголосовавших");
+                                        to = Double.parseDouble(scanner.nextLine());
+                                    }
                                     switch (filterNumber) {
                                         case 21 -> tmpPredicate = new PredicateByTitle(userFilter);
                                         case 22 -> tmpPredicate = new PredicateByCountry(userFilter);
                                         case 23 -> tmpPredicate = new PredicateByYear(Integer.parseInt(userFilter));
-                                        case 24 -> tmpPredicate = new PredicateBetweenTwoRates(userFilter);
-                                        case 25 -> tmpPredicate = new PredicateBetweenTwoRatesCounters(userFilter);
+                                        case 24 -> tmpPredicate = new PredicateBetweenTwoRates(from, to);
+                                        case 25 -> tmpPredicate = new PredicateBetweenTwoRatesCounters(from, to);
                                         default -> System.out.println("Нет такого фильтра");
                                     }
                                     predicateList.add(tmpPredicate);

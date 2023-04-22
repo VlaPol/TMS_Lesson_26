@@ -11,6 +11,5 @@ public interface ShowService {
     List<Show> getSortedList(String action);
     List<Show> getSortedListByChainOfRules(List<Comparator<Show>> action);
     List<Show> getFiltredListByChainOfRules(List<Predicate<Show>> predicateList);
-    List<Show> getShowList() throws IOException;
-    List<Show> getFiltredList(String action, String query);
+    List<Show> getShowList();
 }

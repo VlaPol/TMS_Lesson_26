@@ -2,7 +2,6 @@ package by.tms.service;
 
 import by.tms.models.Show;
 import by.tms.repository.TVShowRepository;
-import by.tms.utils.predicates.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -90,23 +89,6 @@ public class ShowServiceImpl implements ShowService {
         return tvShowRepository.getDataFromFile();
     }
 
-    //        через stream API
-    //        return showList.stream().filter(show -> show.getCountryCode()
-    //                .equals(query)).collect(Collectors.toList());
-    @Override
-    public List<Show> getFiltredList(String action, String query) {
-
-        Predicate<Show> tempPredicate = switch (action) {
-            case "byCountry" -> new PredicateByCountry(query.toUpperCase());
-            case "byYear" -> new PredicateByYear(Integer.parseInt(query));
-            case "byTitle" -> new PredicateByTitle(query);
-            case "betweenTwoRates" -> new PredicateBetweenTwoRates(query);
-            case "betweenTwoRatesCounters" -> new PredicateBetweenTwoRatesCounters(query);
-            default -> throw new IllegalStateException("Unexpected value: " + action);
-        };
-        return getFiltredShows(tempPredicate);
-    }
-
     private List<Show> getSortedShows(Comparator<Show> comparator) {
 
         List<Show> showList = getShowList();
@@ -114,19 +96,5 @@ public class ShowServiceImpl implements ShowService {
         return showList;
     }
 
-    private List<Show> getFiltredShows(Predicate<Show> predicate) {
-
-        List<Show> showList = getShowList();
-
-        List<Show> returnedList = new ArrayList<>();
-
-        for (Show itm : showList) {
-            if (predicate.test(itm)) {
-                returnedList.add(itm);
-            }
-        }
-
-        return returnedList;
-    }
 
 }

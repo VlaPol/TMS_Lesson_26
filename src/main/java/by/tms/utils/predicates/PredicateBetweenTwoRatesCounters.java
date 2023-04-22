@@ -8,10 +8,9 @@ public class PredicateBetweenTwoRatesCounters implements Predicate<Show> {
     private final double ratingBegin;
     private final double ratingEnd;
 
-    public PredicateBetweenTwoRatesCounters(String query) {
-        String[] tmpArray = query.split(", ");
-        this.ratingBegin = Integer.parseInt(tmpArray[0]);
-        this.ratingEnd = Integer.parseInt(tmpArray[1]);
+    public PredicateBetweenTwoRatesCounters(double from, double to) {
+        this.ratingBegin = from;
+        this.ratingEnd = to;
     }
 
     @Override
