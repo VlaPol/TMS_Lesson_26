@@ -12,6 +12,17 @@ public abstract class Show {
     private double rating;
     private int ratesCounter;
 
+    public Show(String showTitle, int releaseYear, String countryCode, double rating, int ratesCounter) {
+        this.showTitle = showTitle;
+        this.releaseYear = releaseYear;
+        this.countryCode = countryCode;
+        this.rating = rating;
+        this.ratesCounter = ratesCounter;
+    }
+
+    public Show() {
+    }
+
     public String getShowTitle() {
         return showTitle;
     }
