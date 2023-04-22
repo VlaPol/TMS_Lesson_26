@@ -209,20 +209,20 @@ public class Main {
                                     if (filterNumber == 0) {
                                         break;
                                     }
-                                    String userFilter="";
+                                    String userFilter = "";
                                     double from = 0;
                                     double to = 0;
-                                    if(filterNumber != 24 && filterNumber != 25) {
+                                    if (filterNumber != 24 && filterNumber != 25) {
                                         System.out.println("Введите условие фильтра");
                                         userFilter = scanner.nextLine();
                                     }
-                                    if(filterNumber == 24){
+                                    if (filterNumber == 24) {
                                         System.out.println("Введите начальную границу проголосовавших");
                                         from = Double.parseDouble(scanner.nextLine());
                                         System.out.println("Введите конечную границу проголосовавших");
                                         to = Double.parseDouble(scanner.nextLine());
                                     }
-                                    if(filterNumber == 25){
+                                    if (filterNumber == 25) {
                                         System.out.println("Введите начальную границу проголосовавших");
                                         from = Double.parseDouble(scanner.nextLine());
                                         System.out.println("Введите конечную границу проголосовавших");
