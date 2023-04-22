@@ -8,10 +8,9 @@ public class PredicateBetweenTwoRates implements Predicate<Show> {
     private final double ratesBegin;
     private final double ratesEnd;
 
-    public PredicateBetweenTwoRates(String query) {
-        String[] tmpArray = query.split(", ");
-        this.ratesBegin = Double.parseDouble(tmpArray[0]);
-        this.ratesEnd = Double.parseDouble(tmpArray[1]);
+    public PredicateBetweenTwoRates(double from, double to) {
+        this.ratesBegin = from;
+        this.ratesEnd = to;
     }
 
     @Override
