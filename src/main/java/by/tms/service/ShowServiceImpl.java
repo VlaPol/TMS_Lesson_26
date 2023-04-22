@@ -34,7 +34,6 @@ public class ShowServiceImpl implements ShowService {
         }
 
         sourceList.sort(comparatorChain);
-
         return sourceList;
 
     }
