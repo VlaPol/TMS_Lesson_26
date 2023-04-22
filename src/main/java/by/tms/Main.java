@@ -9,14 +9,12 @@ import by.tms.utils.predicates.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.function.Predicate;
 
 public class Main {
 
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
-    private static final List<String> ACTIONS_FOR_SORTING = List.of("byTitle", "byCountry", "byYear", "byRating", "byCounters");
     private final static List<Comparator<Show>> COMPORATORS_LIST = Show.getComparators();
 
     public static void main(String[] args) {
@@ -36,10 +34,13 @@ public class Main {
             System.out.print("Выберите пункт меню (0 для выхода): ");
 
             int key = scanner.nextInt();
-            List<Show> showList = new ArrayList<>();
+            List<Show> showList;
 
             switch (key) {
                 case 1 -> {
+
+                    List<Comparator<Show>> comporatorsList;
+
                     System.out.println("Выберите способ сортировки: ");
                     String inputString = scanner.nextLine();
                     boolean flag = true;
@@ -58,37 +59,48 @@ public class Main {
                         int subKey = Integer.parseInt(scanner.nextLine());
                         switch (subKey) {
                             case 10 -> {
-                                showList = tvShowService.getShowList();
+                                comporatorsList = new ArrayList<>();
+                                showList = tvShowService.getSortedListByChainOfRules(comporatorsList);
                                 for (Show itm : showList) {
                                     System.out.println(itm.toString());
                                 }
                             }
                             case 11 -> {
-                                showList = tvShowService.getSortedList(ACTIONS_FOR_SORTING.get(0));
+                                comporatorsList = new ArrayList<>();
+                                comporatorsList.add(Show.COMPARE_BY_NAME);
+                                showList = tvShowService.getSortedListByChainOfRules(comporatorsList);
                                 for (Show itm : showList) {
                                     System.out.println(itm.toString());
                                 }
                             }
                             case 12 -> {
-                                showList = tvShowService.getSortedList(ACTIONS_FOR_SORTING.get(1));
+                                comporatorsList = new ArrayList<>();
+                                comporatorsList.add(Show.COMPARE_BY_COUNTRY);
+                                showList = tvShowService.getSortedListByChainOfRules(comporatorsList);
                                 for (Show itm : showList) {
                                     System.out.println(itm.toString());
                                 }
                             }
                             case 13 -> {
-                                showList = tvShowService.getSortedList(ACTIONS_FOR_SORTING.get(2));
+                                comporatorsList = new ArrayList<>();
+                                comporatorsList.add(Show.COMPARE_BY_YEAR);
+                                showList = tvShowService.getSortedListByChainOfRules(comporatorsList);
                                 for (Show itm : showList) {
                                     System.out.println(itm.toString());
                                 }
                             }
                             case 14 -> {
-                                showList = tvShowService.getSortedList(ACTIONS_FOR_SORTING.get(3));
+                                comporatorsList = new ArrayList<>();
+                                comporatorsList.add(Show.COMPARE_BY_RATING);
+                                showList = tvShowService.getSortedListByChainOfRules(comporatorsList);
                                 for (Show itm : showList) {
                                     System.out.println(itm.toString());
                                 }
                             }
                             case 15 -> {
-                                showList = tvShowService.getSortedList(ACTIONS_FOR_SORTING.get(4));
+                                comporatorsList = new ArrayList<>();
+                                comporatorsList.add(Show.COMPARE_BY_RATES_COUNTER);
+                                showList = tvShowService.getSortedListByChainOfRules(comporatorsList);
                                 for (Show itm : showList) {
                                     System.out.println(itm.toString());
                                 }
@@ -96,7 +108,7 @@ public class Main {
                             case 16 -> {
                                 System.out.println("Введите пункты сортировок через запятую или 0 при отсутствии выбора");
                                 String filterChain = scanner.nextLine();
-                                List<Comparator<Show>> userAction = new ArrayList<>();
+                                comporatorsList = new ArrayList<>();
                                 if (!(filterChain.equals("0"))) {
                                     String[] strings = filterChain.split(", ");
                                     for (String string : strings) {
@@ -104,10 +116,10 @@ public class Main {
                                         if (index == 0) {
                                             throw new IllegalArgumentException("Выбран пункт 0, который не предусмотрен для цепочки фильтров");
                                         }
-                                        userAction.add(COMPORATORS_LIST.get(index - 1));
+                                        comporatorsList.add(COMPORATORS_LIST.get(index - 1));
                                     }
                                 }
-                                showList = tvShowService.getSortedListByChainOfRules(userAction);
+                                showList = tvShowService.getSortedListByChainOfRules(comporatorsList);
                                 for (Show itm : showList) {
                                     System.out.println(itm.toString());
                                 }

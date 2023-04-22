@@ -17,22 +17,6 @@ public class ShowServiceImpl implements ShowService {
         this.tvShowRepository = tvShowRepository;
     }
 
-
-    @Override
-    public List<Show> getSortedList(String action) {
-
-        Comparator<Show> tmpComparator = switch (action) {
-            case "byCountry" -> Show.COMPARE_BY_COUNTRY;
-            case "byYear" -> Show.COMPARE_BY_YEAR;
-            case "byTitle" -> Show.COMPARE_BY_NAME;
-            case "byRating" -> Show.COMPARE_BY_RATING;
-            case "byCounters" -> Show.COMPARE_BY_RATES_COUNTER;
-            default -> throw new IllegalStateException("Unexpected value: " + action);
-        };
-        return getSortedShows(tmpComparator);
-
-    }
-
     @Override
     public List<Show> getSortedListByChainOfRules(List<Comparator<Show>> action) {
 
@@ -84,16 +68,8 @@ public class ShowServiceImpl implements ShowService {
 
     }
 
-    @Override
-    public List<Show> getShowList() {
+    private List<Show> getShowList() {
         return tvShowRepository.getDataFromFile();
-    }
-
-    private List<Show> getSortedShows(Comparator<Show> comparator) {
-
-        List<Show> showList = getShowList();
-        showList.sort(comparator);
-        return showList;
     }
 
 
