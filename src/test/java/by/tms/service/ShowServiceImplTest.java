@@ -22,132 +22,164 @@ class ShowServiceImplTest {
     TVShowRepository repository;
     ShowService service;
 
+    public static final Show FIRST_SHOW = new Series("Во все тяжкие", 2008, "US", 8.9, 533325, "2013", 5, 62);
+    public static final Show SECOND_SHOW = new Film("Тайна Коко", 2017, "US", 8.8, 620689);
+    public static final Show THIRD_SHOW = new Film("Властелин колец: Возвращение короля", 2003, "NZ", 8.7, 551487);
+
     @BeforeEach
-    void setRepository(){
+    void setRepository() {
         repository = mock(TVShowRepository.class);
         service = new ShowServiceImpl(repository);
     }
 
     @Test
-    void shouldReturnUnsortedListIfEmptyComporatorsList(){
-        List<Comparator<Show>> compList = new ArrayList<>();
+    void shouldReturnUnsortedListIfEmptyComporatorsList() {
+
         List<Show> shows = new ArrayList<>();
-        shows.add(new Series("Во все тяжкие", 2008, "US", 8.9, 533325, "2013",5,62));
-        shows.add(new Film("Тайна Коко", 2017, "US",8.7,620689));
-        shows.add(new Film("Властелин колец: Возвращение короля", 2003,"NZ", 8.7, 551487));
+        shows.add(FIRST_SHOW);
+        shows.add(SECOND_SHOW);
+        shows.add(THIRD_SHOW);
         when(repository.getDataFromFile())
                 .thenReturn(shows);
 
-        List<Show> returnedList = service.getSortedListByChainOfRules(compList);
+        List<Show> expectedList = new ArrayList<>();
+        expectedList.add(FIRST_SHOW);
+        expectedList.add(SECOND_SHOW);
+        expectedList.add(THIRD_SHOW);
 
-        assertEquals(shows, returnedList);
+        assertEquals(shows, expectedList);
     }
 
     @Test
-    void shouldReturnSortedByTitleList(){
+    void shouldReturnSortedByTitleList() {
         List<Comparator<Show>> compList = new ArrayList<>();
         compList.add(Show.COMPARE_BY_NAME);
 
         List<Show> shows = new ArrayList<>();
-        shows.add(new Series("Во все тяжкие", 2008, "US", 8.9, 533325, "2013",5,62));
-        shows.add(new Film("Тайна Коко", 2017, "US",8.7,620689));
-        shows.add(new Film("Властелин колец: Возвращение короля", 2003,"NZ", 8.7, 551487));
+        shows.add(FIRST_SHOW);
+        shows.add(SECOND_SHOW);
+        shows.add(THIRD_SHOW);
         when(repository.getDataFromFile())
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getSortedListByChainOfRules(compList);
+        List<Show> expectedList = new ArrayList<>();
+        expectedList.add(THIRD_SHOW);
+        expectedList.add(FIRST_SHOW);
+        expectedList.add(SECOND_SHOW);
 
-        assertEquals(shows, returnedList);
+        assertEquals(expectedList, returnedList);
     }
 
     @Test
-    void shouldReturnSortedByYearList(){
+    void shouldReturnSortedByYearList() {
         List<Comparator<Show>> compList = new ArrayList<>();
         compList.add(Show.COMPARE_BY_YEAR);
 
         List<Show> shows = new ArrayList<>();
-        shows.add(new Series("Во все тяжкие", 2008, "US", 8.9, 533325, "2013",5,62));
-        shows.add(new Film("Тайна Коко", 2017, "US",8.7,620689));
-        shows.add(new Film("Властелин колец: Возвращение короля", 2003,"NZ", 8.7, 551487));
+        shows.add(FIRST_SHOW);
+        shows.add(SECOND_SHOW);
+        shows.add(THIRD_SHOW);
         when(repository.getDataFromFile())
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getSortedListByChainOfRules(compList);
+        List<Show> expectedList = new ArrayList<>();
+        expectedList.add(SECOND_SHOW);
+        expectedList.add(FIRST_SHOW);
+        expectedList.add(THIRD_SHOW);
 
-        assertEquals(shows, returnedList);
+
+        assertEquals(expectedList, returnedList);
     }
 
     @Test
-    void shouldReturnSortedByCountryCodeList(){
+    void shouldReturnSortedByCountryCodeList() {
         List<Comparator<Show>> compList = new ArrayList<>();
         compList.add(Show.COMPARE_BY_COUNTRY);
 
         List<Show> shows = new ArrayList<>();
-        shows.add(new Series("Во все тяжкие", 2008, "US", 8.9, 533325, "2013",5,62));
-        shows.add(new Film("Тайна Коко", 2017, "US",8.7,620689));
-        shows.add(new Film("Властелин колец: Возвращение короля", 2003,"NZ", 8.7, 551487));
+        shows.add(FIRST_SHOW);
+        shows.add(SECOND_SHOW);
+        shows.add(THIRD_SHOW);
         when(repository.getDataFromFile())
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getSortedListByChainOfRules(compList);
+        List<Show> expectedList = new ArrayList<>();
+        expectedList.add(THIRD_SHOW);
+        expectedList.add(FIRST_SHOW);
+        expectedList.add(SECOND_SHOW);
 
-        assertEquals(shows, returnedList);
+        assertEquals(expectedList, returnedList);
     }
 
     @Test
-    void shouldReturnSortedByRatingList(){
+    void shouldReturnSortedByRatingList() {
         List<Comparator<Show>> compList = new ArrayList<>();
         compList.add(Show.COMPARE_BY_RATING);
 
         List<Show> shows = new ArrayList<>();
-        shows.add(new Series("Во все тяжкие", 2008, "US", 8.9, 533325, "2013",5,62));
-        shows.add(new Film("Тайна Коко", 2017, "US",8.7,620689));
-        shows.add(new Film("Властелин колец: Возвращение короля", 2003,"NZ", 8.7, 551487));
+        shows.add(FIRST_SHOW);
+        shows.add(SECOND_SHOW);
+        shows.add(THIRD_SHOW);
         when(repository.getDataFromFile())
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getSortedListByChainOfRules(compList);
+        List<Show> expectedList = new ArrayList<>();
+        expectedList.add(FIRST_SHOW);
+        expectedList.add(SECOND_SHOW);
+        expectedList.add(THIRD_SHOW);
 
-        assertEquals(shows, returnedList);
+        assertEquals(expectedList, returnedList);
     }
 
     @Test
-    void shouldReturnSortedByRatesCounterYearList(){
+    void shouldReturnSortedByRatesCounterYearList() {
         List<Comparator<Show>> compList = new ArrayList<>();
         compList.add(Show.COMPARE_BY_RATES_COUNTER);
 
         List<Show> shows = new ArrayList<>();
-        shows.add(new Series("Во все тяжкие", 2008, "US", 8.9, 533325, "2013",5,62));
-        shows.add(new Film("Тайна Коко", 2017, "US",8.7,620689));
-        shows.add(new Film("Властелин колец: Возвращение короля", 2003,"NZ", 8.7, 551487));
+        shows.add(FIRST_SHOW);
+        shows.add(SECOND_SHOW);
+        shows.add(THIRD_SHOW);
         when(repository.getDataFromFile())
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getSortedListByChainOfRules(compList);
+        List<Show> expectedList = new ArrayList<>();
+        expectedList.add(SECOND_SHOW);
+        expectedList.add(THIRD_SHOW);
+        expectedList.add(FIRST_SHOW);
 
-        assertEquals(shows, returnedList);
+        assertEquals(expectedList, returnedList);
     }
 
     @Test
-    void shouldReturnSortedFirstByTitleSecondByYearList(){
+    void shouldReturnSortedFirstByTitleSecondByYearList() {
         List<Comparator<Show>> compList = new ArrayList<>();
         compList.add(Show.COMPARE_BY_NAME);
         compList.add(Show.COMPARE_BY_YEAR);
 
         List<Show> shows = new ArrayList<>();
-        shows.add(new Series("Во все тяжкие", 2008, "US", 8.9, 533325, "2013",5,62));
-        shows.add(new Film("Тайна Коко", 2017, "US",8.7,620689));
-        shows.add(new Film("Властелин колец: Возвращение короля", 2003,"NZ", 8.7, 551487));
+        shows.add(FIRST_SHOW);
+        shows.add(SECOND_SHOW);
+        shows.add(THIRD_SHOW);
         when(repository.getDataFromFile())
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getSortedListByChainOfRules(compList);
+        List<Show> expectedList = new ArrayList<>();
+        expectedList.add(THIRD_SHOW);
+        expectedList.add(FIRST_SHOW);
+        expectedList.add(SECOND_SHOW);
 
-        assertEquals(shows, returnedList);
+        assertEquals(expectedList, returnedList);
     }
 
     @Test
-    void shouldReturnSortedFirstByAllComparatorsList(){
+    void shouldReturnSortedFirstByAllComparatorsList() {
         List<Comparator<Show>> compList = new ArrayList<>();
         compList.add(Show.COMPARE_BY_NAME);
         compList.add(Show.COMPARE_BY_YEAR);
@@ -156,55 +188,63 @@ class ShowServiceImplTest {
         compList.add(Show.COMPARE_BY_COUNTRY);
 
         List<Show> shows = new ArrayList<>();
-        shows.add(new Series("Во все тяжкие", 2008, "US", 8.9, 533325, "2013",5,62));
-        shows.add(new Film("Тайна Коко", 2017, "US",8.7,620689));
-        shows.add(new Film("Властелин колец: Возвращение короля", 2003,"NZ", 8.7, 551487));
+        shows.add(FIRST_SHOW);
+        shows.add(SECOND_SHOW);
+        shows.add(THIRD_SHOW);
         when(repository.getDataFromFile())
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getSortedListByChainOfRules(compList);
+        List<Show> expectedList = new ArrayList<>();
+        expectedList.add(THIRD_SHOW);
+        expectedList.add(FIRST_SHOW);
+        expectedList.add(SECOND_SHOW);
 
-        assertEquals(shows, returnedList);
+        assertEquals(expectedList, returnedList);
     }
 
     @Test
-    void shouldReturnUnfilteredListIfEmptyPredicateList(){
+    void shouldReturnUnfilteredListIfEmptyPredicateList() {
         List<Predicate<Show>> predList = new ArrayList<>();
         List<Show> shows = new ArrayList<>();
-        shows.add(new Series("Во все тяжкие", 2008, "US", 8.9, 533325, "2013",5,62));
-        shows.add(new Film("Тайна Коко", 2017, "US",8.7,620689));
-        shows.add(new Film("Властелин колец: Возвращение короля", 2003,"NZ", 8.7, 551487));
+        shows.add(FIRST_SHOW);
+        shows.add(SECOND_SHOW);
+        shows.add(THIRD_SHOW);
         when(repository.getDataFromFile())
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getFiltredListByChainOfRules(predList);
+        List<Show> expectedList = new ArrayList<>();
+        expectedList.add(FIRST_SHOW);
+        expectedList.add(SECOND_SHOW);
+        expectedList.add(THIRD_SHOW);
 
-        assertEquals(shows, returnedList);
+        assertEquals(expectedList, returnedList);
     }
 
     @Test
-    void shouldReturnFilteredByTitleList(){
+    void shouldReturnFilteredByTitleList() {
         List<Predicate<Show>> predList = new ArrayList<>();
         String inputTitle = "ко";
         predList.add(new PredicateByTitle(inputTitle));
 
         List<Show> shows = new ArrayList<>();
-        shows.add(new Series("Во все тяжкие", 2008, "US", 8.9, 533325, "2013",5,62));
-        shows.add(new Film("Тайна Коко", 2017, "US",8.7,620689));
-        shows.add(new Film("Властелин колец: Возвращение короля", 2003,"NZ", 8.7, 551487));
+        shows.add(FIRST_SHOW);
+        shows.add(SECOND_SHOW);
+        shows.add(THIRD_SHOW);
         when(repository.getDataFromFile())
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getFiltredListByChainOfRules(predList);
-        List<Show> waitList =new ArrayList<>();
-        waitList.add(shows.get(1));
-        waitList.add(shows.get(2));
+        List<Show> expectedList = new ArrayList<>();
+        expectedList.add(SECOND_SHOW);
+        expectedList.add(THIRD_SHOW);
 
-        assertIterableEquals(returnedList, waitList);
+        assertIterableEquals(returnedList, expectedList);
     }
 
     @Test
-    void shouldReturnFilteredByTitleAndRatingBetweenToDoubleNumbersList(){
+    void shouldReturnFilteredByTitleAndRatingBetweenToDoubleNumbersList() {
         List<Predicate<Show>> predList = new ArrayList<>();
         String inputTitle = "ко";
         double from = 8.8;
@@ -214,36 +254,36 @@ class ShowServiceImplTest {
         predList.add(new PredicateBetweenTwoRates(from, to));
 
         List<Show> shows = new ArrayList<>();
-        shows.add(new Series("Во все тяжкие", 2008, "US", 8.9, 533325, "2013",5,62));
-        shows.add(new Film("Тайна Коко", 2017, "US",8.7,620689));
-        shows.add(new Film("Властелин колец: Возвращение короля", 2003,"NZ", 8.9, 551487));
+        shows.add(FIRST_SHOW);
+        shows.add(SECOND_SHOW);
+        shows.add(THIRD_SHOW);
         when(repository.getDataFromFile())
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getFiltredListByChainOfRules(predList);
-        List<Show> waitList =new ArrayList<>();
-        waitList.add(shows.get(2));
+        List<Show> expectedList = new ArrayList<>();
+        expectedList.add(SECOND_SHOW);
 
-        assertIterableEquals(returnedList, waitList);
+        assertEquals(returnedList, expectedList);
     }
 
     @Test
-    void shouldReturnEmptyListIfTitleDoesntConsistInputTitle(){
+    void shouldReturnEmptyListIfTitleDoesntConsistInputTitle() {
         List<Predicate<Show>> predList = new ArrayList<>();
         String inputTitle = "zzzzzzzzzzzzzzzzzzzzzzzzzzz";
         predList.add(new PredicateByTitle(inputTitle));
 
         List<Show> shows = new ArrayList<>();
-        shows.add(new Series("Во все тяжкие", 2008, "US", 8.9, 533325, "2013",5,62));
-        shows.add(new Film("Тайна Коко", 2017, "US",8.7,620689));
-        shows.add(new Film("Властелин колец: Возвращение короля", 2003,"NZ", 8.7, 551487));
+        shows.add(FIRST_SHOW);
+        shows.add(SECOND_SHOW);
+        shows.add(THIRD_SHOW);
         when(repository.getDataFromFile())
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getFiltredListByChainOfRules(predList);
-        List<Show> waitList = new ArrayList<>();
+        List<Show> expectedList = new ArrayList<>();
 
 
-        assertEquals(waitList, returnedList);
+        assertEquals(expectedList, returnedList);
     }
 }

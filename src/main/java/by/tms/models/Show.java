@@ -104,6 +104,16 @@ public abstract class Show {
         public int compare(Show show1, Show show2) {
             return Double.compare(show2.getRating(), show1.getRating());
         }
+
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return super.equals(obj);
+        }
     }
 
     private static class CompareByRatesCounter implements Comparator<Show> {

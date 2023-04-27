@@ -1,5 +1,7 @@
 package by.tms.models;
 
+import java.util.Objects;
+
 public class Series extends Show {
 
     private String lastEpisode;
@@ -26,6 +28,19 @@ public class Series extends Show {
 
     public void setNumberOfEpisodes(int numberOfEpisodes) {
         this.numberOfEpisodes = numberOfEpisodes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Series series = (Series) o;
+        return numberOfSeasons == series.numberOfSeasons && numberOfEpisodes == series.numberOfEpisodes && Objects.equals(lastEpisode, series.lastEpisode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lastEpisode, numberOfSeasons, numberOfEpisodes);
     }
 
     @Override
