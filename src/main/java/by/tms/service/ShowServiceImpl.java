@@ -20,7 +20,7 @@ public class ShowServiceImpl implements ShowService {
     @Override
     public List<Show> getSortedListByChainOfRules(List<Comparator<Show>> action) {
 
-        List<Show> sourceList = getShowList();
+        List<Show> sourceList = new ArrayList<>(getShowList());
         if (action.isEmpty()) {
             return sourceList;
         }
@@ -41,7 +41,7 @@ public class ShowServiceImpl implements ShowService {
     @Override
     public List<Show> getFiltredListByChainOfRules(List<Predicate<Show>> action) {
 
-        List<Show> sourceList = getShowList();
+        List<Show> sourceList = new ArrayList<>(getShowList());
 
         if (action.isEmpty()) {
             return sourceList;
