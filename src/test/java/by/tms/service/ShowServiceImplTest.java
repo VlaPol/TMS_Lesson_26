@@ -42,12 +42,11 @@ class ShowServiceImplTest {
         when(repository.getDataFromFile())
                 .thenReturn(shows);
 
-        List<Show> expectedList = new ArrayList<>();
-        expectedList.add(FIRST_SHOW);
-        expectedList.add(SECOND_SHOW);
-        expectedList.add(THIRD_SHOW);
+        List<Comparator<Show>> compList = new ArrayList<>();
+        List<Show> returnedList = service.getSortedListByChainOfRules(compList);
+        List<Show> expectedList = List.of(FIRST_SHOW, SECOND_SHOW, THIRD_SHOW);
 
-        assertEquals(shows, expectedList);
+        assertEquals(returnedList, expectedList);
     }
 
     @Test
@@ -63,10 +62,7 @@ class ShowServiceImplTest {
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getSortedListByChainOfRules(compList);
-        List<Show> expectedList = new ArrayList<>();
-        expectedList.add(THIRD_SHOW);
-        expectedList.add(FIRST_SHOW);
-        expectedList.add(SECOND_SHOW);
+        List<Show> expectedList = List.of(THIRD_SHOW, FIRST_SHOW, SECOND_SHOW);
 
         assertEquals(expectedList, returnedList);
     }
@@ -84,11 +80,7 @@ class ShowServiceImplTest {
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getSortedListByChainOfRules(compList);
-        List<Show> expectedList = new ArrayList<>();
-        expectedList.add(SECOND_SHOW);
-        expectedList.add(FIRST_SHOW);
-        expectedList.add(THIRD_SHOW);
-
+        List<Show> expectedList = List.of(SECOND_SHOW, FIRST_SHOW, THIRD_SHOW);
 
         assertEquals(expectedList, returnedList);
     }
@@ -106,10 +98,7 @@ class ShowServiceImplTest {
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getSortedListByChainOfRules(compList);
-        List<Show> expectedList = new ArrayList<>();
-        expectedList.add(THIRD_SHOW);
-        expectedList.add(FIRST_SHOW);
-        expectedList.add(SECOND_SHOW);
+        List<Show> expectedList = List.of(THIRD_SHOW, FIRST_SHOW, SECOND_SHOW);
 
         assertEquals(expectedList, returnedList);
     }
@@ -127,10 +116,7 @@ class ShowServiceImplTest {
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getSortedListByChainOfRules(compList);
-        List<Show> expectedList = new ArrayList<>();
-        expectedList.add(FIRST_SHOW);
-        expectedList.add(SECOND_SHOW);
-        expectedList.add(THIRD_SHOW);
+        List<Show> expectedList = List.of(FIRST_SHOW, SECOND_SHOW, THIRD_SHOW);
 
         assertEquals(expectedList, returnedList);
     }
@@ -148,10 +134,7 @@ class ShowServiceImplTest {
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getSortedListByChainOfRules(compList);
-        List<Show> expectedList = new ArrayList<>();
-        expectedList.add(SECOND_SHOW);
-        expectedList.add(THIRD_SHOW);
-        expectedList.add(FIRST_SHOW);
+        List<Show> expectedList = List.of(SECOND_SHOW, THIRD_SHOW, FIRST_SHOW);
 
         assertEquals(expectedList, returnedList);
     }
@@ -170,10 +153,7 @@ class ShowServiceImplTest {
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getSortedListByChainOfRules(compList);
-        List<Show> expectedList = new ArrayList<>();
-        expectedList.add(THIRD_SHOW);
-        expectedList.add(FIRST_SHOW);
-        expectedList.add(SECOND_SHOW);
+        List<Show> expectedList = List.of(THIRD_SHOW, FIRST_SHOW, SECOND_SHOW);
 
         assertEquals(expectedList, returnedList);
     }
@@ -195,10 +175,7 @@ class ShowServiceImplTest {
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getSortedListByChainOfRules(compList);
-        List<Show> expectedList = new ArrayList<>();
-        expectedList.add(THIRD_SHOW);
-        expectedList.add(FIRST_SHOW);
-        expectedList.add(SECOND_SHOW);
+        List<Show> expectedList = List.of(THIRD_SHOW, FIRST_SHOW, SECOND_SHOW);
 
         assertEquals(expectedList, returnedList);
     }
@@ -214,10 +191,7 @@ class ShowServiceImplTest {
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getFiltredListByChainOfRules(predList);
-        List<Show> expectedList = new ArrayList<>();
-        expectedList.add(FIRST_SHOW);
-        expectedList.add(SECOND_SHOW);
-        expectedList.add(THIRD_SHOW);
+        List<Show> expectedList = List.of(FIRST_SHOW, SECOND_SHOW, THIRD_SHOW);
 
         assertEquals(expectedList, returnedList);
     }
@@ -236,9 +210,7 @@ class ShowServiceImplTest {
                 .thenReturn(shows);
 
         List<Show> returnedList = service.getFiltredListByChainOfRules(predList);
-        List<Show> expectedList = new ArrayList<>();
-        expectedList.add(SECOND_SHOW);
-        expectedList.add(THIRD_SHOW);
+        List<Show> expectedList = List.of(SECOND_SHOW, THIRD_SHOW);
 
         assertIterableEquals(returnedList, expectedList);
     }
@@ -282,7 +254,6 @@ class ShowServiceImplTest {
 
         List<Show> returnedList = service.getFiltredListByChainOfRules(predList);
         List<Show> expectedList = new ArrayList<>();
-
 
         assertEquals(expectedList, returnedList);
     }
